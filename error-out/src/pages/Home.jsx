@@ -72,7 +72,7 @@ const HomePage = () => {
               onClick={() => navigate('/round_3')}
               className="inline-flex items-center gap-2 text-sm font-bold text-purple-400 hover:text-purple-300 cursor-pointer"
             >
-              PREVIEW ROUND <ChevronRight className="w-4 h-4" />
+              START ROUND <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
