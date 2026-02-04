@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom coder theme styles */
+body {
+  background-color: #0f0f0f;
+  color: #00ff00;
+  font-family: 'Fira Code', monospace;
+}
+.glow {
+  text-shadow: 0 0 10px #00ff00;
+}
+.code-rain {
+  background: linear-gradient(transparent, rgba(0, 255, 0, 0.1));
+  animation: rain 2s linear infinite;
+}
+@keyframes rain {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
