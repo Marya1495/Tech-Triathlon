@@ -1,159 +1,125 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Brain, 
-  Terminal, 
-  Play, 
-  Code2, 
-  Cpu, 
-  Clock, 
-  ChevronLeft, 
-  ChevronRight, 
-  Flag, 
-  Activity,
-  CheckCircle2,
-  XCircle,
-  User,
-  Building,
-  Hash,
-  Lock, 
-  LogOut,
-  LayoutDashboard,
-  Search,
-  Download,
-  Trash2,
-  AlertCircle,
-  Fingerprint,
-  Ticket,
-  Eye,
-  ChevronDown,
-  ChevronUp
+  Brain, Terminal, Play, Code2, Cpu, Clock, ChevronLeft, ChevronRight, Flag, 
+  Activity, CheckCircle2, XCircle, User, Building, Hash, Lock, LogOut, 
+  LayoutDashboard, Search, Download, Trash2, AlertCircle, Ticket, Eye, 
+  ChevronDown, ChevronUp, Loader2, PlayCircle, StopCircle
 } from 'lucide-react';
 
 const QUESTIONS = [
   {
     id: 1,
-    title: "Palindrome Integer",
+    title: "Fibonacci Numbers",
     difficulty: "EASY",
-    objective: "Complete the function to determine if an integer is a palindrome. Do not convert to string.",
+    objective: "Start with a specific Fibonacci sequence number, then calculate and print the next N Fibonacci numbers. Example: 1 10 results in the first 10 numbers starting from 1.",
+    testInput: "1 10",
+    expectedOutput: "1 1 2 3 5 8 13 21 34 55",
     initialCode: `#include <iostream>
+
 using namespace std;
 
-bool isPalindrome(int x) {
-    // Write your logic here
-    // Hint: Reverse the half of the number or full number
-    
-}
-
 int main() {
-    int test = 121;
-    if(isPalindrome(test)) cout << "Palindrome";
-    else cout << "Not Palindrome";
+    int start, count;
+    if (!(cin >> start >> count)) return 0;
+
+    // Write logic here (print 'count' numbers starting from 'start')
+    
+
     return 0;
 }`,
-    validator: (code) => code.includes('while') && code.includes('%10') && code.includes('/10')
   },
   {
     id: 2,
-    title: "Find Maximum in Array",
-    difficulty: "EASY",
-    objective: "Complete the logic to find and return the largest element in a given integer array.",
+    title: "Integer List Sorting",
+    difficulty: "MEDIUM",
+    objective: "Take a list of integers (N followed by N values) and print it after sorting it in descending order.",
+    testInput: "5 4 1 9 3 7",
+    expectedOutput: "9 7 4 3 1",
     initialCode: `#include <iostream>
 #include <vector>
+#include <algorithm>
+
 using namespace std;
 
-int findMax(vector<int>& nums) {
-    int maxVal = nums[0];
-    // Complete the loop logic below
-    
-    return maxVal;
-}
-
 int main() {
-    vector<int> v = {10, 24, 5, 89, 42};
-    cout << "Max: " << findMax(v);
+    int n;
+    if (!(cin >> n)) return 0;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++) cin >> arr[i];
+
+    // Write logic here (sort descending and print)
+    
+
     return 0;
 }`,
-    validator: (code) => code.includes('for') && (code.includes('nums[i]') || code.includes(':'))
   },
   {
     id: 3,
-    title: "Fibonacci Series",
-    difficulty: "MEDIUM",
-    objective: "Complete the function to return the Nth Fibonacci number using recursion or iteration.",
+    title: "Zipper Merge",
+    difficulty: "HARD",
+    objective: "Merge two arrays (size N and M) in a zipper-like fashion. If one array is longer, append the remaining elements to the end.",
+    testInput: "3 4 1 3 5 2 4 6 8",
+    expectedOutput: "1 2 3 4 5 6 8",
     initialCode: `#include <iostream>
+#include <vector>
+
 using namespace std;
 
-int fib(int n) {
-    // Start Logic
-    if (n <= 1) return n;
-    
-    // Complete the recursive or iterative step
-    
-}
-
 int main() {
-    cout << "5th Fib: " << fib(5);
+    int n, m;
+    if (!(cin >> n >> m)) return 0;
+    vector<int> a(n), b(m);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int j = 0; j < m; j++) cin >> b[j];
+
+    // Write logic here
+    
+
     return 0;
 }`,
-    validator: (code) => code.includes('fib(n-1)') || (code.includes('prev') && code.includes('curr'))
   },
   {
     id: 4,
-    title: "Prime Number Check",
+    title: "Check Scrambled String",
     difficulty: "MEDIUM",
-    objective: "Write the logic to check if a number is prime. Optimize for O(sqrt(N)).",
-    initialCode: `#include <iostream>
-#include <cmath>
-using namespace std;
-
-bool isPrime(int n) {
-    if (n <= 1) return false;
-    // Write optimized loop below
-    
-    return true;
-}
-
-int main() {
-    if(isPrime(29)) cout << "Prime";
-    else cout << "Not Prime";
-    return 0;
-}`,
-    validator: (code) => code.includes('sqrt') || code.includes('i*i')
-  },
-  {
-    id: 5,
-    title: "String Reversal",
-    difficulty: "HARD",
-    objective: "Reverse a string in-place without using built-in reverse() function.",
+    objective: "Given two strings of equal length, determine whether one is a scramble (anagram) of the other. Output 'True' or 'False'.",
+    testInput: "abc bca",
+    expectedOutput: "True",
     initialCode: `#include <iostream>
 #include <string>
+
 using namespace std;
 
-void reverseString(string &s) {
-    int n = s.length();
-    // Use two-pointer approach to swap characters
-    
-}
-
 int main() {
-    string s = "TechTriathlon";
-    reverseString(s);
-    cout << s;
+    string s1, s2;
+    // Use cin to read the two strings
+    if (!(cin >> s1 >> s2)) return 0;
+
+    // Write logic here (determine if s2 is a scramble of s1)
+    
+
     return 0;
 }`,
-    validator: (code) => code.includes('swap') || code.includes('temp')
   }
 ];
 
+const getRoundStatus = () => localStorage.getItem('round3_started') === 'true';
+
 // 1. LOGIN SCREEN
-const LoginScreen = ({ onLogin, onAdminAccess }) => {
+const LoginScreen = ({ onLogin, onAdminAccess, participants }) => {
   const [formData, setFormData] = useState({ name: '', dept: '', rollNo: '' });
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.name || !formData.dept || !formData.rollNo) {
-      setError('All fields are required.');
+      setError('Required fields missing.');
+      return;
+    }
+    const isStarted = getRoundStatus();
+    const existing = participants.find(p => p.rollNo === formData.rollNo);
+    if (isStarted && !existing) {
+      setError('Entry Closed: Round 3 has already commenced.');
       return;
     }
     onLogin(formData);
@@ -161,535 +127,400 @@ const LoginScreen = ({ onLogin, onAdminAccess }) => {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-8 relative">
+      <div className="max-w-md w-full bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-2xl">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center p-3 bg-purple-500/10 rounded-xl border border-purple-500/20 mb-4">
+          <div className="inline-flex p-3 bg-purple-500/10 rounded-xl border border-purple-500/20 mb-4">
             <Brain className="text-purple-500 w-8 h-8" />
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight uppercase">Round 3</h1>
-          <p className="text-sm text-gray-500 mt-2">Logic Building & C++ Challenge</p>
+          <h1 className="text-3xl font-bold text-white uppercase tracking-tight">Round 3</h1>
+          <p className="text-sm text-gray-500 mt-2 tracking-widest uppercase">Competitive Logic Arena</p>
         </div>
-
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Full Name</label>
-            <div className="relative">
-              <User className="absolute left-3 top-3 w-5 h-5 text-gray-600" />
-              <input 
-                type="text" 
-                className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-purple-500 focus:outline-none transition-all"
-                placeholder="Enter your name"
-                value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
-              />
-            </div>
+          <div className="space-y-1">
+            <label className="text-[10px] font-bold text-gray-600 uppercase ml-1 tracking-widest">Identification</label>
+            <input 
+              type="text" placeholder="Full Name" 
+              className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-purple-500 outline-none transition-all"
+              value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
+            />
           </div>
-
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Dept</label>
-              <div className="relative">
-                <Building className="absolute left-3 top-3 w-5 h-5 text-gray-600" />
-                <select 
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-purple-500 focus:outline-none appearance-none"
-                  value={formData.dept}
-                  onChange={e => setFormData({...formData, dept: e.target.value})}
-                >
-                  <option value="">Select</option>
-                  <option value="IT">IT</option>
-                  <option value="CS">CS</option>
-                  <option value="BA">BA</option>
-                  <option value="BMS">BMS</option>
-                  <option value="BAF">BAF</option>
-                  <option value="Biotech">Biotech</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Roll No</label>
-              <div className="relative">
-                <Hash className="absolute left-3 top-3 w-5 h-5 text-gray-600" />
-                <input 
-                  type="text" 
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-purple-500 focus:outline-none transition-all"
-                  placeholder="e.g. 101"
-                  value={formData.rollNo}
-                  onChange={e => setFormData({...formData, rollNo: e.target.value})}
-                />
-              </div>
-            </div>
+            <select 
+              className="bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-purple-500 outline-none appearance-none"
+              value={formData.dept} onChange={e => setFormData({...formData, dept: e.target.value})}
+            >
+              <option value="">Dept</option>
+              <option value="IT">IT</option><option value="CS">CS</option><option value="BA">BA</option>
+              <option value="BMS">BMS</option><option value="Biotech">Biotech</option>
+            </select>
+            <input 
+              type="text" placeholder="Roll No" 
+              className="bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-purple-500 outline-none"
+              value={formData.rollNo} onChange={e => setFormData({...formData, rollNo: e.target.value})}
+            />
           </div>
-
-          {error && <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-xs flex gap-2"><AlertCircle className="w-4 h-4"/>{error}</div>}
-
-          <button className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 rounded-lg shadow-lg transition-all mt-6">
-            START ROUND
-          </button>
+          {error && <p className="text-red-400 text-xs italic bg-red-500/10 p-2 rounded border border-red-500/20">{error}</p>}
+          <button className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 rounded-lg shadow-lg transition-all active:scale-95">JOIN ROUND</button>
         </form>
-
         <div className="mt-8 pt-6 border-t border-gray-800 flex justify-center">
-          <button onClick={onAdminAccess} className="text-xs font-bold text-gray-600 hover:text-white flex items-center gap-2 transition-colors">
-            <Lock className="w-3 h-3" /> ADMIN PORTAL
-          </button>
+          <button onClick={onAdminAccess} className="text-xs text-gray-600 hover:text-white flex items-center gap-2 transition-colors"><Lock className="w-3 h-3" /> STAFF PORTAL</button>
         </div>
       </div>
     </div>
   );
 };
 
-// 2. ADMIN DASHBOARD
+// 2. WAITING LOBBY
+const WaitingLobby = ({ user, onStart }) => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (getRoundStatus()) onStart();
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [onStart]);
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-gray-900 border border-gray-800 rounded-2xl p-10 text-center shadow-2xl">
+        <Loader2 className="w-12 h-12 text-purple-500 animate-spin mx-auto mb-6" />
+        <h2 className="text-2xl font-bold text-white mb-2 tracking-tight">WAITING ROOM</h2>
+        <p className="text-sm text-gray-500 mb-8">Hello <span className="text-purple-400 font-bold">{user.name}</span>. The server is currently on standby. The round will automatically start once the admin grants access.</p>
+        <div className="bg-gray-950 border border-gray-800 rounded-xl p-4 text-[10px] flex justify-between uppercase font-bold text-gray-500">
+           <span>Connection: Live</span>
+           <span className="text-purple-500">{user.participantCode}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 3. ADMIN DASHBOARD
 const AdminDashboard = ({ participants, onLogout, onClearData }) => {
-  const [searchTerm, setSearchTerm] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [expandedCode, setExpandedCode] = useState(null);
+  const [isRoundStarted, setIsRoundStarted] = useState(getRoundStatus());
 
   const handleAuth = (e) => {
     e.preventDefault();
     if (password === 'admin') setIsAuthenticated(true);
-    else alert('Invalid Password');
+    else alert('Unauthorized');
   };
 
-  const downloadExcel = () => {
-    const headers = ['Rank,Name,Dept,RollNo,ParticipantCode,Status,Score'];
-    const rows = participants
-      .sort((a, b) => (b.score || 0) - (a.score || 0))
-      .map((p, idx) => `${idx + 1},${p.name},${p.dept},${p.rollNo},${p.participantCode},${p.status},${p.score}`);
-    
-    const csvContent = "data:text/csv;charset=utf-8," + headers.concat(rows).join("\n");
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "round3_results.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const toggleReview = (rollNo) => {
-    setExpandedCode(expandedCode === rollNo ? null : rollNo);
+  const toggleRound = () => {
+    const newState = !isRoundStarted;
+    setIsRoundStarted(newState);
+    localStorage.setItem('round3_started', newState.toString());
   };
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center font-mono">
-        <div className="max-w-sm w-full bg-gray-900 border border-gray-800 rounded-xl p-8">
-          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <LayoutDashboard className="text-purple-500" /> Admin Portal
-          </h2>
-          <form onSubmit={handleAuth} className="space-y-4">
-            <input 
-              type="password" 
-              className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-purple-500 focus:outline-none"
-              placeholder="Enter Access Key"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-            <button className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-lg transition-all">LOGIN</button>
-            <button type="button" onClick={onLogout} className="w-full text-gray-500 text-xs py-2 hover:text-white">Back to Student Login</button>
-          </form>
-        </div>
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center font-mono p-4">
+        <form onSubmit={handleAuth} className="bg-gray-900 p-8 rounded-2xl border border-gray-800 space-y-6 w-full max-sm shadow-2xl">
+          <div className="text-center">
+            <Lock className="w-10 h-10 text-purple-500 mx-auto mb-2" />
+            <h2 className="text-white font-bold text-xl uppercase tracking-widest">Admin Portal</h2>
+          </div>
+          <input type="password" placeholder="Key" className="bg-black text-white p-3 border border-gray-800 rounded-lg w-full outline-none focus:border-purple-500 transition-all" value={password} onChange={e => setPassword(e.target.value)} />
+          <button className="bg-purple-600 w-full py-3 rounded-lg text-white font-bold hover:bg-purple-500 active:scale-95 transition-all shadow-lg">LOGIN</button>
+          <button type="button" onClick={onLogout} className="w-full text-xs text-gray-500 hover:text-white mt-4">Student Login</button>
+        </form>
       </div>
     );
   }
 
-  const filtered = participants.filter(p => 
-    (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
-    (p.rollNo || '').includes(searchTerm) ||
-    (p.participantCode || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
     <div className="min-h-screen bg-gray-950 text-gray-300 font-mono p-6">
-      <div className="max-w-7xl mx-auto">
-        <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-6 border-b border-gray-800 gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Brain className="text-purple-500" /> ROUND 3 <span className="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 text-xs border border-purple-500/20 uppercase">Admin</span>
-            </h1>
-            <p className="text-sm text-gray-500 mt-1">Live Participant Analytics & Logic Review</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button onClick={downloadExcel} className="px-4 py-2 bg-green-600/10 hover:bg-green-600/20 border border-green-600/30 text-green-400 rounded-lg text-xs font-bold flex items-center gap-2 transition-all">
-              <Download className="w-4 h-4" /> PRINT EXCEL (CSV)
-            </button>
-            <button onClick={onClearData} className="px-4 py-2 bg-red-600/10 hover:bg-red-600/20 border border-red-600/30 text-red-400 rounded-lg text-xs font-bold flex items-center gap-2 transition-all">
-              <Trash2 className="w-4 h-4" /> CLEAR ENTRIES
-            </button>
-            <button onClick={onLogout} className="px-4 py-2 bg-gray-900 hover:bg-gray-800 border border-gray-700 rounded-lg text-xs font-bold flex items-center gap-2 transition-all">
-              <LogOut className="w-4 h-4" /> LOGOUT
-            </button>
-          </div>
-        </header>
-
-        <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-xl">
-          <div className="p-4 border-b border-gray-800 flex flex-col sm:flex-row justify-between items-center bg-gray-900/50 gap-4">
-            <h3 className="font-bold text-white flex items-center gap-2">Live Entries</h3>
-            <div className="relative w-full sm:w-80">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-500" />
-              <input 
-                type="text" 
-                className="w-full bg-gray-950 border border-gray-800 rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:border-purple-500 focus:outline-none"
-                placeholder="Search name, roll, or ID code..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-gray-950 text-gray-400 uppercase text-[10px] tracking-wider font-bold">
-                <tr>
-                  <th className="px-6 py-4">Rank</th>
-                  <th className="px-6 py-4">Participant Details</th>
-                  <th className="px-6 py-4 text-center">Action</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Score</th>
+      <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-800 pb-6 gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-white uppercase flex items-center gap-2">
+            <Cpu className="text-purple-500" /> CONTROL CENTER
+          </h1>
+          <p className="text-xs text-gray-500 uppercase tracking-[0.3em]">Round 3 System Management</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <button onClick={toggleRound} className={`px-5 py-2.5 rounded-lg font-bold text-xs flex items-center gap-2 transition-all border ${isRoundStarted ? 'bg-red-500/10 text-red-400 border-red-500/30' : 'bg-green-500/10 text-green-400 border-green-500/30'}`}>
+            {isRoundStarted ? <StopCircle className="w-4 h-4"/> : <PlayCircle className="w-4 h-4"/>}
+            {isRoundStarted ? 'STOP ROUND' : 'START ROUND'}
+          </button>
+          <button onClick={onClearData} className="px-5 py-2.5 bg-red-900/10 text-red-400 border border-red-900/20 rounded-lg text-xs font-bold hover:bg-red-900/20 transition-all">CLEAR ALL</button>
+          <button onClick={onLogout} className="px-5 py-2.5 bg-gray-900 rounded-lg text-xs font-bold border border-gray-800 hover:bg-gray-800 transition-all">LOGOUT</button>
+        </div>
+      </header>
+      
+      <div className="max-w-7xl mx-auto bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden shadow-2xl">
+        <div className="overflow-x-auto">
+            <table className="w-full text-left">
+            <thead className="bg-black text-gray-500 text-[10px] font-bold uppercase tracking-widest">
+                <tr><th className="p-5">Participant</th><th className="p-5">Roll No</th><th className="p-5">Status</th><th className="p-5 text-right">Score</th></tr>
+            </thead>
+            <tbody className="divide-y divide-gray-800 text-sm">
+                {participants.sort((a,b) => (b.score || 0) - (a.score || 0)).map(p => (
+                <tr key={p.rollNo} className="hover:bg-purple-500/5">
+                    <td className="p-5 text-white font-bold">{p.name}</td>
+                    <td className="p-5 text-gray-500 font-mono">{p.rollNo}</td>
+                    <td className="p-5">
+                        <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${p.status === 'COMPLETED' ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
+                            {p.status}
+                        </span>
+                    </td>
+                    <td className="p-5 text-right text-purple-400 font-bold text-lg">{p.score}</td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-800">
-                {filtered.sort((a,b) => (b.score || 0) - (a.score || 0)).map((p, idx) => (
-                  <React.Fragment key={p.rollNo}>
-                    <tr className="hover:bg-gray-800/50 transition-colors">
-                      <td className="px-6 py-4 text-gray-500 font-mono">#{idx + 1}</td>
-                      <td className="px-6 py-4">
-                          <div className="font-bold text-white">{p.name}</div>
-                          <div className="text-[10px] text-gray-500 uppercase flex items-center gap-2">
-                             <span className="bg-gray-800 px-1.5 py-0.5 rounded text-gray-400 font-mono">{p.rollNo}</span>
-                             <span>•</span>
-                             <span className="text-purple-400 font-bold">{p.participantCode}</span>
-                          </div>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <button 
-                          onClick={() => toggleReview(p.rollNo)}
-                          disabled={!p.submittedAnswers}
-                          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                            p.submittedAnswers 
-                            ? 'bg-purple-600/10 text-purple-400 hover:bg-purple-600/20 border border-purple-500/30' 
-                            : 'bg-gray-800 text-gray-600 cursor-not-allowed border border-gray-700'
-                          }`}
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          {expandedCode === p.rollNo ? 'Hide Code' : 'Review Logic'}
-                          {expandedCode === p.rollNo ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                        </button>
-                      </td>
-                      <td className="px-6 py-4">
-                        {p.status === 'COMPLETED' ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20 uppercase tracking-tighter">
-                            <CheckCircle2 className="w-3 h-3" /> FINISHED
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 uppercase tracking-tighter">
-                            <Activity className="w-3 h-3" /> ATTEMPTING
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <span className="font-mono text-purple-400 font-bold text-lg">{p.score || 0}</span>
-                      </td>
-                    </tr>
-                    {expandedCode === p.rollNo && p.submittedAnswers && (
-                      <tr className="bg-black/50">
-                        <td colSpan="5" className="px-6 py-4">
-                          <div className="space-y-6">
-                            <div className="flex items-center gap-3">
-                              <div className="h-px flex-1 bg-gray-800"></div>
-                              <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Submitted Compiler Content</span>
-                              <div className="h-px flex-1 bg-gray-800"></div>
-                            </div>
-                            <div className="grid grid-cols-1 gap-4">
-                              {p.submittedAnswers.map((ans, qIdx) => (
-                                <div key={qIdx} className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
-                                  <div className="px-4 py-2 bg-gray-900 border-b border-gray-800 flex justify-between items-center">
-                                    <span className="text-xs font-bold text-gray-300">
-                                      Task {qIdx + 1}: {QUESTIONS[qIdx].title}
-                                    </span>
-                                    <span className={`text-[10px] font-bold uppercase ${ans.status === 'PASS' ? 'text-green-500' : 'text-red-500'}`}>
-                                      {ans.status}
-                                    </span>
-                                  </div>
-                                  <pre className="p-4 text-[11px] font-mono text-purple-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">
-                                    {ans.code}
-                                  </pre>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
                 ))}
-                {filtered.length === 0 && (
-                  <tr>
-                    <td colSpan="5" className="px-6 py-12 text-center text-gray-600 italic">No participants found matching your criteria.</td>
-                  </tr>
-                )}
-              </tbody>
+                {participants.length === 0 && <tr><td colSpan="4" className="p-10 text-center text-gray-600 italic">No registrations found.</td></tr>}
+            </tbody>
             </table>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-// 3. EXAM SESSION
+// 4. EXAM SESSION
 const ExamSession = ({ user, onComplete }) => {
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [logs, setLogs] = useState([]);
-  const [answers, setAnswers] = useState(QUESTIONS.map(q => ({ 
-    code: q.initialCode, 
-    status: 'UNATTEMPTED' 
-  })));
+  const [answers, setAnswers] = useState(QUESTIONS.map(q => ({ code: q.initialCode, status: 'UNATTEMPTED' })));
 
   useEffect(() => {
     if (completed) return;
-    const timer = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          clearInterval(timer);
-          handleFinish();
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
+    const timer = setInterval(() => setTimeLeft(t => t > 0 ? t - 1 : 0), 1000);
     return () => clearInterval(timer);
   }, [completed]);
 
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
-
-  const handleRun = () => {
+  const handleRun = async () => {
     setIsRunning(true);
-    setLogs(["> g++ compiler: Compiling logic_builder.cpp...", "> Executing ./a.out..."]);
+    setLogs(["> Initializing C++ Compiler...", "> Compiling main.cpp...", "> Executing with stdin..."]);
     
-    setTimeout(() => {
-      const passed = QUESTIONS[currentQIndex].validator(answers[currentQIndex].code);
-      const updated = [...answers];
-      updated[currentQIndex].status = passed ? 'PASS' : 'FAIL';
-      setAnswers(updated);
-      
-      if (passed) {
-        setLogs(prev => [...prev, "✓ Test Successful: Logic verified.", "The program exited with return code 0."]);
-      } else {
-        setLogs(prev => [...prev, "⚠ Runtime Alert: Output mismatch.", "Logic does not satisfy test constraints."]);
-      }
-      setIsRunning(false);
-    }, 1200);
+    try {
+        const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+            method: "POST",
+            body: JSON.stringify({
+                language: "cpp",
+                version: "10.2.0",
+                files: [
+                    {
+                        name: "main.cpp",
+                        content: answers[currentQIndex].code
+                    }
+                ],
+                stdin: QUESTIONS[currentQIndex].testInput
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.run) {
+            const output = result.run.stdout.trim();
+            const error = result.run.stderr.trim();
+            const compileOutput = result.compile?.stderr?.trim() || "";
+
+            const newLogs = [];
+            if (compileOutput) newLogs.push(`[COMPILER ERROR]\n${compileOutput}`);
+            if (error) newLogs.push(`[RUNTIME ERROR]\n${error}`);
+            if (output) newLogs.push(`[STDOUT]\n${output}`);
+            if (!output && !error && !compileOutput) newLogs.push("> Process terminated with no output.");
+
+            // Verification Logic
+            const expected = QUESTIONS[currentQIndex].expectedOutput.trim();
+            const passed = output === expected;
+            
+            const updated = [...answers];
+            updated[currentQIndex].status = passed ? 'PASS' : 'FAIL';
+            setAnswers(updated);
+
+            if (passed) {
+                newLogs.push("✓ SUCCESS: Logic verified against test case.");
+            } else if (output) {
+                newLogs.push(`⚠ WRONG ANSWER: Got "${output}", Expected "${expected}"`);
+            } else if (!compileOutput) {
+                newLogs.push("⚠ FAILED: Code executed but failed to produce correct result.");
+            }
+
+            setLogs(newLogs);
+        } else {
+            setLogs(["> Backend Error: Service unreachable."]);
+        }
+    } catch (err) {
+        setLogs([`> Connection Lost: ${err.message}`]);
+    } finally {
+        setIsRunning(false);
+    }
   };
 
   const handleFinish = () => {
-    const score = answers.filter(a => a.status === 'PASS').length * 20;
-    // Pass current answers to onComplete to save for Admin view
+    const pointsPerQuestion = 100 / QUESTIONS.length;
+    const score = answers.filter(a => a.status === 'PASS').length * pointsPerQuestion;
     onComplete({ score, status: 'COMPLETED', submittedAnswers: answers });
     setCompleted(true);
   };
 
-  const currentQ = QUESTIONS[currentQIndex];
-  const currentAnswer = answers[currentQIndex];
-
   if (completed) {
-    const score = answers.filter(a => a.status === 'PASS').length * 20;
+    const pointsPerQuestion = 100 / QUESTIONS.length;
+    const finalScore = answers.filter(a => a.status === 'PASS').length * pointsPerQuestion;
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-8 text-center font-mono">
-        <CheckCircle2 className="w-20 h-20 text-purple-500 mb-6" />
-        <h1 className="text-4xl font-bold text-white mb-2">CHALLENGE SUBMITTED</h1>
-        <p className="text-gray-400 mb-4 text-xl">Final Evaluation: {score}/100</p>
-        <div className="bg-purple-500/10 border border-purple-500/20 px-6 py-4 rounded-xl mb-8">
-            <span className="text-[10px] text-purple-400 uppercase block mb-1 tracking-[0.2em] font-bold">Unique Entry Receipt</span>
-            <span className="text-white font-bold text-2xl tracking-widest">{user?.participantCode}</span>
+      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-8 text-center font-mono text-white">
+        <CheckCircle2 className="w-20 h-20 text-purple-500 mb-6 animate-pulse" />
+        <h1 className="text-4xl font-black mb-2 uppercase tracking-tighter">SUBMISSION RECEIVED</h1>
+        <p className="text-gray-500 mb-8 font-bold tracking-[0.3em] uppercase">{user?.participantCode}</p>
+        <div className="bg-purple-500/10 border border-purple-500/20 px-10 py-6 rounded-2xl mb-8">
+            <span className="text-xs text-purple-400 uppercase font-bold block mb-1">Score Result</span>
+            <span className="text-5xl font-black text-white">{finalScore}<span className="text-purple-500">/100</span></span>
         </div>
-        <button onClick={() => window.location.reload()} className="px-8 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-bold transition-all shadow-lg">
-          LOGOUT / NEXT STUDENT
-        </button>
+        <button onClick={() => window.location.reload()} className="px-10 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold transition-all shadow-lg active:scale-95">LOGOUT</button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex flex-col">
-      <nav className="h-16 border-b border-gray-800 bg-[#0a0d12] flex items-center justify-between px-6 sticky top-0 z-50">
+    <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex flex-col overflow-hidden h-screen">
+      <nav className="h-16 border-b border-gray-800 bg-[#0a0d12]/90 flex items-center justify-between px-6 shrink-0 z-50">
         <div className="flex items-center gap-3">
-          <Brain className="text-purple-500 w-6 h-6" />
-          <div>
-            <h1 className="font-bold text-white tracking-widest uppercase text-sm">Round 3</h1>
-            <div className="flex items-center gap-2 text-[10px]">
-                <span className="text-purple-400 font-bold bg-purple-500/10 px-1 rounded">{user?.participantCode}</span>
-                <span className="text-gray-600">/</span>
-                <span className="text-gray-500 uppercase">{user?.name}</span>
-            </div>
-          </div>
+            <Brain className="text-purple-500 w-6 h-6" />
+            <h1 className="font-bold text-white uppercase text-xs tracking-widest">Logic Arena: Round 3</h1>
         </div>
         <div className="flex items-center gap-6">
-          <div className={`flex items-center gap-2 px-4 py-1.5 rounded-lg border ${timeLeft < 300 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' : 'bg-gray-900 border-gray-800 text-purple-400'} font-bold`}>
-            <Clock className="w-4 h-4" />
-            {formatTime(timeLeft)}
-          </div>
-          <div className="flex gap-1.5">
-            {answers.map((ans, i) => (
-              <div key={i} className={`w-3.5 h-3.5 rounded-sm transition-all ${i === currentQIndex ? 'bg-white ring-2 ring-purple-500' : ans.status === 'PASS' ? 'bg-green-500' : ans.status === 'FAIL' ? 'bg-red-500' : 'bg-gray-800'}`} />
-            ))}
-          </div>
+            <div className="hidden md:block text-[10px] text-gray-500 uppercase tracking-widest font-bold">User: {user?.name}</div>
+            <div className="bg-gray-900 px-4 py-1.5 rounded-lg border border-gray-800 text-purple-400 font-black shadow-inner">
+                {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+            </div>
         </div>
       </nav>
 
-      <main className="flex-1 overflow-y-auto p-4 md:p-6 max-w-6xl mx-auto w-full flex flex-col gap-4">
-        <section className="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 shadow-xl border-l-4 border-l-purple-500">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <span className="bg-purple-900/30 text-purple-400 px-2 py-0.5 rounded text-[10px] font-bold border border-purple-500/20">LOGIC TASK {currentQIndex + 1}</span>
-              <h2 className="text-xl font-bold text-white tracking-tight">{currentQ.title}</h2>
+      <main className="flex-1 flex flex-col lg:flex-row p-4 gap-4 overflow-hidden bg-[#05070a]">
+        {/* Left Side: Tasks & Console */}
+        <div className="lg:w-1/3 flex flex-col gap-4 shrink-0 h-full overflow-hidden">
+            <section className="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 shadow-xl border-l-4 border-l-purple-500 overflow-y-auto shrink-0">
+                <div className="flex justify-between items-center mb-4">
+                    <span className="text-[10px] font-bold bg-purple-500/10 text-purple-400 px-2 py-1 rounded border border-purple-500/20 uppercase">Problem {currentQIndex + 1}</span>
+                    <span className="text-[10px] font-bold text-gray-600 uppercase">{QUESTIONS[currentQIndex].difficulty}</span>
+                </div>
+                <h2 className="text-lg font-bold text-white mb-2 tracking-tight">{QUESTIONS[currentQIndex].title}</h2>
+                <p className="text-xs text-gray-400 leading-relaxed bg-black/40 p-3 rounded-lg border border-gray-800/50 italic">{QUESTIONS[currentQIndex].objective}</p>
+                <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
+                    {answers.map((ans, i) => (
+                        <button key={i} onClick={() => setCurrentQIndex(i)} className={`w-10 h-10 rounded-lg shrink-0 text-xs font-bold transition-all border ${i === currentQIndex ? 'bg-purple-600 border-purple-400 text-white' : ans.status === 'PASS' ? 'bg-green-500/20 border-green-500/30 text-green-400' : ans.status === 'FAIL' ? 'bg-red-500/20 border-red-500/30 text-red-400' : 'bg-gray-800 border-gray-700 text-gray-500'}`}>
+                            {i + 1}
+                        </button>
+                    ))}
+                </div>
+            </section>
+
+            <section className="bg-black border border-gray-800 rounded-2xl flex flex-col flex-1 shadow-2xl overflow-hidden min-h-0">
+                <div className="bg-[#111] p-2 px-5 border-b border-gray-800 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Cpu className="w-3.5 h-3.5 text-gray-500" />
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Compiler Terminal</span>
+                    </div>
+                </div>
+                <div className="p-4 font-mono text-[11px] overflow-y-auto flex-1 custom-scrollbar leading-relaxed">
+                    {logs.length === 0 ? (
+                        <p className="text-gray-700 italic">// Code Environment Ready. Use cin to read inputs. Output results to stdout.</p>
+                    ) : (
+                        <div className="space-y-2">
+                            {logs.map((log, i) => (
+                                <pre key={i} className={`whitespace-pre-wrap break-all ${log.startsWith('✓') ? 'text-green-400 font-bold' : log.startsWith('⚠') ? 'text-red-400' : log.includes('ERROR') ? 'text-red-500' : 'text-purple-300'}`}>
+                                    {log}
+                                </pre>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+        </div>
+
+        {/* Right Side: IDE */}
+        <div className="lg:w-2/3 flex flex-col bg-[#0d1117] border border-gray-800 rounded-2xl shadow-2xl overflow-hidden relative h-full">
+            <div className="bg-[#161b22] p-3 px-5 border-b border-gray-800 flex justify-between items-center text-[10px] text-gray-400 uppercase font-black tracking-widest">
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-red-500/30"></div>
+                    <div className="w-2 h-2 rounded-full bg-yellow-500/30"></div>
+                    <div className="w-2 h-2 rounded-full bg-green-500/30"></div>
+                    <span className="ml-2 flex items-center gap-2 font-mono"><Code2 className="w-4 h-4 text-purple-400" /> main.cpp</span>
+                </div>
+                <div className="flex items-center gap-3">
+                    {answers[currentQIndex].status === 'PASS' && <span className="text-green-400 flex items-center gap-1 font-bold">VERIFIED</span>}
+                </div>
             </div>
-            <span className={`text-[10px] font-bold px-2 py-1 rounded border ${currentQ.difficulty === 'HARD' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-green-500/10 text-green-400 border-green-500/20'}`}>
-              {currentQ.difficulty}
-            </span>
-          </div>
-          <p className="text-sm text-gray-400 leading-relaxed border-l-2 border-purple-500/20 pl-4">{currentQ.objective}</p>
-        </section>
-
-        <section className="flex-1 flex flex-col bg-[#0d1117] border border-gray-800 rounded-2xl flex flex-col shadow-2xl overflow-hidden min-h-[450px]">
-          <div className="bg-[#161b22] p-3 px-5 border-b border-gray-800 flex justify-between items-center text-[10px] text-gray-400 uppercase font-bold tracking-widest">
-            <div className="flex items-center gap-2"><Code2 className="w-4 h-4 text-purple-400" /> logic_builder.cpp</div>
-            <div className="flex items-center gap-3">
-               {currentAnswer.status === 'PASS' && <span className="text-green-500 flex items-center gap-1"><CheckCircle2 className="w-3 h-3"/> UNIT TESTS PASSED</span>}
-               {currentAnswer.status === 'FAIL' && <span className="text-red-500 flex items-center gap-1"><XCircle className="w-3 h-3"/> LOGIC FAILURE</span>}
+            <div className="flex-1 relative overflow-hidden">
+                <textarea 
+                    spellCheck="false"
+                    className="w-full h-full bg-transparent p-6 pt-6 font-mono text-sm focus:outline-none resize-none text-purple-100 leading-6 selection:bg-purple-500/20"
+                    value={answers[currentQIndex].code}
+                    onChange={e => {
+                        const up = [...answers];
+                        up[currentQIndex].code = e.target.value;
+                        setAnswers(up);
+                    }}
+                />
             </div>
-          </div>
-          <div className="flex-1 flex overflow-hidden">
-            <div className="w-12 bg-[#0d1117] border-r border-gray-800/50 flex flex-col items-end pr-3 pt-6 text-gray-600 text-[11px] font-mono select-none">
-              {Array.from({length: 40}).map((_, i) => <div key={i} className="h-6 leading-6">{i+1}</div>)}
+            
+            <div className="p-4 bg-[#161b22]/70 border-t border-gray-800 flex justify-between items-center px-8 shrink-0">
+                <div className="flex gap-4">
+                    <button disabled={currentQIndex === 0} onClick={() => setCurrentQIndex(i => i - 1)} className="text-[10px] font-bold text-gray-500 hover:text-white disabled:opacity-30 uppercase tracking-widest">BACK</button>
+                    <button disabled={currentQIndex === QUESTIONS.length - 1} onClick={() => setCurrentQIndex(i => i + 1)} className="text-[10px] font-bold text-gray-500 hover:text-white disabled:opacity-30 uppercase tracking-widest">NEXT</button>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                    <button onClick={handleRun} disabled={isRunning} className="bg-purple-600 hover:bg-purple-500 text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)] active:scale-95 disabled:grayscale flex items-center gap-2">
+                        {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
+                        RUN & VERIFY
+                    </button>
+                    <button onClick={handleFinish} className="bg-gray-800 text-gray-400 border border-gray-700 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:text-white transition-all">FINISH ROUND</button>
+                </div>
             </div>
-            <textarea 
-              value={answers[currentQIndex].code}
-              onChange={e => {
-                const up = [...answers];
-                up[currentQIndex].code = e.target.value;
-                setAnswers(up);
-              }}
-              spellCheck="false"
-              className="flex-1 bg-transparent p-6 pt-6 font-mono text-sm focus:outline-none resize-none text-purple-100 leading-6"
-            />
-          </div>
-          
-          <div className="p-4 bg-[#161b22] border-t border-gray-800 flex justify-between items-center">
-            <button 
-              disabled={currentQIndex === 0}
-              onClick={() => setCurrentQIndex(i => i - 1)}
-              className="text-[10px] font-bold text-gray-500 hover:text-white disabled:opacity-30 uppercase tracking-widest flex items-center gap-1"
-            >
-              <ChevronLeft className="w-3 h-3" /> Prev
-            </button>
-
-            <button 
-              onClick={handleRun}
-              disabled={isRunning}
-              className="bg-purple-600 hover:bg-purple-500 text-white px-10 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] flex items-center gap-2"
-            >
-              {isRunning ? <Activity className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
-              Build & Run
-            </button>
-
-            {currentQIndex === QUESTIONS.length - 1 ? (
-              <button onClick={handleFinish} className="text-[10px] font-bold text-green-500 hover:text-green-400 uppercase tracking-widest flex items-center gap-1 transition-colors">
-                Final Submission <Flag className="w-3 h-3" />
-              </button>
-            ) : (
-              <button onClick={() => setCurrentQIndex(i => i + 1)} className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-widest flex items-center gap-1 transition-colors">
-                Next Task <ChevronRight className="w-3 h-3" />
-              </button>
-            )}
-          </div>
-        </section>
-
-        <section className="bg-black border border-gray-800 rounded-2xl flex flex-col overflow-hidden h-40 shadow-2xl mb-8">
-          <div className="bg-[#111] p-2 px-5 border-b border-gray-800 flex items-center gap-2">
-            <Cpu className="w-3.5 h-3.5 text-gray-500" />
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Compiler Output</span>
-          </div>
-          <div className="p-4 font-mono text-xs overflow-y-auto custom-scrollbar">
-            {logs.length === 0 ? (
-              <p className="text-gray-700 italic">// Terminal ready. Click "Build & Run" to execute driver code.</p>
-            ) : (
-              <div className="space-y-1">
-                {logs.map((log, i) => (
-                  <div key={i} className={log.startsWith('>') ? 'text-blue-500' : log.includes('✓') ? 'text-green-400' : log.includes('⚠') ? 'text-red-400' : 'text-gray-400'}>
-                    {log}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+        </div>
       </main>
     </div>
   );
 };
 
-// FINAL COMPONENT WITH ROUTING & PERSISTENCE
+// ROOT COMPONENT
 const RoundThree = () => {
-  const [view, setView] = useState('LOGIN'); // LOGIN, ADMIN, EXAM
+  const [view, setView] = useState('LOGIN'); 
   const [currentUser, setCurrentUser] = useState(null);
-  
   const [participants, setParticipants] = useState(() => {
     try {
       const saved = localStorage.getItem('round3_participants');
       return saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      return [];
-    }
+    } catch (e) { return []; }
   });
 
   const handleLogin = (userData) => {
     const existing = participants.find(p => p.rollNo === userData.rollNo);
-    
-    if (existing) {
-      setCurrentUser(existing);
-    } else {
-      const randomCode = `TT3-${Math.floor(1000 + Math.random() * 9000)}`;
-      const newUser = { 
-        ...userData, 
-        participantCode: randomCode, 
-        score: 0, 
-        status: 'ACTIVE' 
-      };
-      const newList = [...participants, newUser];
+    let user = existing;
+    if (!existing) {
+      user = { ...userData, participantCode: `TT3-${Math.floor(1000 + Math.random() * 9000)}`, score: 0, status: 'ACTIVE' };
+      const newList = [...participants, user];
       setParticipants(newList);
       localStorage.setItem('round3_participants', JSON.stringify(newList));
-      setCurrentUser(newUser);
     }
-    setView('EXAM');
+    setCurrentUser(user);
+    if (getRoundStatus() || user.status === 'COMPLETED') setView('EXAM');
+    else setView('WAITING');
   };
 
-  const handleExamComplete = (result) => {
-    const newList = participants.map(p => 
-      p.rollNo === currentUser.rollNo ? { ...p, ...result } : p
-    );
+  const handleExamComplete = (res) => {
+    const newList = participants.map(p => p.rollNo === currentUser.rollNo ? { ...p, ...res } : p);
     setParticipants(newList);
     localStorage.setItem('round3_participants', JSON.stringify(newList));
   };
 
   const clearData = () => {
-    if (confirm("DANGER: This will permanently delete ALL entries. Proceed?")) {
-      setParticipants([]);
+    if (confirm("Reset Round 3 Data?")) {
       localStorage.removeItem('round3_participants');
+      localStorage.setItem('round3_started', 'false');
+      setParticipants([]);
     }
   };
 
   return (
     <>
-      {view === 'LOGIN' && <LoginScreen onLogin={handleLogin} onAdminAccess={() => setView('ADMIN')} />}
+      {view === 'LOGIN' && <LoginScreen onLogin={handleLogin} onAdminAccess={() => setView('ADMIN')} participants={participants} />}
       {view === 'ADMIN' && <AdminDashboard participants={participants} onLogout={() => setView('LOGIN')} onClearData={clearData} />}
+      {view === 'WAITING' && <WaitingLobby user={currentUser} onStart={() => setView('EXAM')} />}
       {view === 'EXAM' && <ExamSession user={currentUser} onComplete={handleExamComplete} />}
     </>
   );

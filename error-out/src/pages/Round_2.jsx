@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Terminal, 
@@ -26,128 +26,179 @@ import {
   ChevronDown,
   ChevronUp,
   Ticket,
-  Code
+  Code,
+  Loader2,
+  PlayCircle,
+  StopCircle,
+  FileSpreadsheet,
+  Circle,
+  ArrowRight
 } from 'lucide-react';
 
 const QUESTIONS = [
   {
     id: 1,
-    title: "The Grade Calculator",
+    title: "Reverse a String",
     difficulty: "EASY",
-    objective: "Fix the syntax errors (function keyword, brackets) and logic (comparison vs assignment, elseif syntax, and output method).",
-    initialCode: `fuction calculateGrade(score) [
-  if (score > 100) return "Invalid";
-  if (score = 90) {
-    return 'A'
-  } elseif (score > 80) {
-    print("B");
-  } else {
-    return "F";
-  }`,
-    validator: (code) => {
-      const c = code.replace(/\s/g, '');
-      return c.includes('function') && c.includes('>=90') && !c.includes('elseif') && c.includes('else if') && !c.includes('print(') && c.includes('return"B"');
+    objective: "Debug the function to correctly reverse a string. Fix the loop bounds, semicolons, and variable naming. Target output: 'olleh'",
+    expectedOutput: "olleh",
+    initialCode: `function reverseStr(str) {
+    let result = "";
+    for(let i = str.length; i >= 0; i--) {
+        result += str[i]
     }
+    return results;
+}
+
+console.log(reverseStr("hello"));`,
+    fixChecks: [
+      /i\s*=\s*str\.length\s*-\s*1/, 
+      /return\s+result\s*(?!s)/,     
+      /result\s*\+=\s*str\[i\]\s*;/, 
+      /reverseStr\(\s*["']hello["']\s*\)/, 
+      /for\s*\(let\s+i/              
+    ]
   },
   {
     id: 2,
-    title: "Sum Even Numbers",
-    difficulty: "MEDIUM",
-    objective: "Fix the arrow syntax, variable declaration (total), loop bounds, condition for even numbers, and return variable casing.",
-    initialCode: `const sumEvens = (arr) -> {
-  const total = 0;
-  for (i = 0; i <= arr.length; i++) {
-    if (arr[i] % 2 != 0) {
-      total += arr[i];
+    title: "Check Palindrome Number",
+    difficulty: "EASY",
+    objective: "Correct the logic to identify palindrome integers. Target output: 'true'",
+    expectedOutput: "true",
+    initialCode: `function isPalindrome(num) {
+    let rev = 0;
+    let temp == num;
+
+    while(num > 1) {
+        rev = rev * 10 + num % 10
+        num = num / 10;
     }
-  }
-  return Total;
-}`,
-    validator: (code) => {
-      const c = code.replace(/\s/g, '');
-      return c.includes('=>') && c.includes('lettotal=0') && c.includes('i<arr.length') && c.includes('%2===0') && c.includes('returntotal');
-    }
+
+    return temp = rev;
+}
+
+console.log(isPalindrome(121));`,
+    fixChecks: [
+      /temp\s*=\s*num/,              
+      /while\s*\(\s*num\s*>\s*0\s*\)/, 
+      /Math\.floor\(\s*num\s*\/\s*10\s*\)/, 
+      /temp\s*===\s*rev/,            
+      /num\s*%\s*10\s*\);/           
+    ]
   },
   {
     id: 3,
-    title: "String Reversal",
-    difficulty: "EASY",
-    objective: "Correct the function keyword, the property typo (lenght), the for-loop delimiters, and the return keyword casing.",
-    initialCode: `fucntion reverse(str) {
-  const reversed = "";
-  for (let i = str.lenght - 1, i >= 0, i--) {
-    reversed += str[i];
-  }
-  Return reversed;
-}`,
-    validator: (code) => {
-      return code.includes('function') && code.includes('length') && code.includes('; i >= 0; i--') && code.includes('return reversed');
+    title: "Valid Parentheses Checker",
+    difficulty: "MEDIUM",
+    objective: "Fix the stack implementation for checking balanced parentheses. Target output: 'true'",
+    expectedOutput: "true",
+    initialCode: `function isValidParentheses(str) {
+    let stack = [];
+
+    for(let ch of str) {
+        if(ch == "(")
+            stack.push(ch);
+        else if(ch == ")") {
+            if(stack.length == 0) return true;
+            stack.pop;
+        }
     }
+
+    return stack.length != 0;
+}
+
+console.log(isValidParentheses("(())"));`,
+    fixChecks: [
+      /return\s+false\s*;/,          
+      /stack\.pop\(\)/,              
+      /stack\.length\s*===\s*0/,     
+      /ch\s*===\s*["']\(["']/,       
+      /stack\.length\s*==\s*0/       
+    ]
   },
   {
     id: 4,
-    title: "User Age Validator",
+    title: "Find Missing Number (1 to N)",
     difficulty: "MEDIUM",
-    objective: "Fix the object literal syntax (missing colon) and ensure logic correctly identifies adults (18 and above).",
-    initialCode: `const user = {
-  name "John"
-  age: 17
-  isAdult: function() {
-    if (this.age > 18) {
-      return true;
-    }
-    return false;
-  }
-}`,
-    validator: (code) => {
-      return code.includes('name: "John"') && (code.includes('age >= 18') || code.includes('age > 17'));
-    }
+    objective: "Fix the formula and the loop indexing to find the missing number. Target output: '4'",
+    expectedOutput: "4",
+    initialCode: `function missing(arr, n) {
+    let total = n * (n + 1 / 2);
+    let sum = 0;
+
+    for(let i = 1; i <= arr.length; i++)
+        sum += arr[i];
+
+    return total - sum;
+}
+
+console.log(missing([1,2,3,5], 5));`,
+    fixChecks: [
+      /\(\s*n\s*\+\s*1\s*\)\s*\/\s*2/, 
+      /i\s*=\s*0/,                   
+      /i\s*<\s*arr\.length/,         
+      /sum\s*\+=\s*arr\[i\]/,        
+      /let\s+total/                  
+    ]
   },
   {
     id: 5,
-    title: "FizzBuzz Generator",
+    title: "Anagram Checker",
     difficulty: "HARD",
-    objective: "Fix the assignment errors (= vs ===) and resolve the logical priority (15 must be checked first).",
-    initialCode: `function fizzBuzz(n) {
-  if (n % 3 = 0) {
-    return "Fizz";
-  }
-  if (n % 5 == 0) {
-    return "Buzz";
-  }
-  if (n % 15 == 0) {
-    return "FizzBuzz";
-  }
-  return n;
-}`,
-    validator: (code) => {
-      const fifteenPos = code.indexOf('15');
-      const threePos = code.indexOf('3');
-      const fivePos = code.indexOf('5');
-      return fifteenPos < threePos && fifteenPos < fivePos && code.includes('=== 0');
-    }
+    objective: "Correct comparison logic and conversion to determine if words are anagrams. Target output: 'true'",
+    expectedOutput: "true",
+    initialCode: `function isAnagram(a, b) {
+    if(a.length != b.length) return true;
+
+    a = a.split("").sort();
+    b = b.split("").sort();
+
+    return a == b;
+}
+
+console.log(isAnagram("listen", "silent"));`,
+    fixChecks: [
+      /return\s+false\s*;/,          
+      /\.join\(\s*["']\s*["']\s*\)/, 
+      /===\s*/,                      
+      /a\.split\(/,                  
+      /b\.split\(/                   
+    ]
   },
   {
     id: 6,
-    title: "Async Data Fetcher",
+    title: "Longest Word in Sentence",
     difficulty: "HARD",
-    objective: "Implement proper asynchronous handling (async/await) and fix the status comparison error.",
-    initialCode: `function getData(url) {
-  const data = fetch(url);
-  if (data.status = 200) {
-    return data.json().name;
-  } else {
-    throw "Fetch Error";
-  }
-}`,
-    validator: (code) => {
-      return code.includes('async function') && code.includes('await fetch') && code.includes('=== 200') && code.includes('await data.json()');
+    objective: "Find and return the longest word. Fix the loop and comparison. Target output: 'Debugging'",
+    expectedOutput: "Debugging",
+    initialCode: `function longestWord(sentence) {
+    let words = sentence.split(" ");
+    let longest = words[0];
+
+    for(let i = 1; i <= words.length; i++) {
+        if(words[i].length >= longest.length);
+            longest = words[i]
     }
+
+    return longestWord;
+}
+
+console.log(longestWord("Debugging requires strong logical thinking"));`,
+    fixChecks: [
+      /i\s*<\s*words\.length/,       
+      /length\s*>\s*longest\.length/, 
+      /return\s+longest(?!\s*Word)/,  
+      /longest\s*=\s*words\[i\]\s*;/, 
+      /split\(\s*["']\s+["']\s*\)/   
+    ]
   }
 ];
 
-// 1. LOGIN SCREEN
-const LoginScreen = ({ onLogin, onAdminAccess }) => {
+const getRoundStatus = () => {
+  return localStorage.getItem('round2_started') === 'true';
+};
+
+const LoginScreen = ({ onLogin, onAdminAccess, participants }) => {
   const [formData, setFormData] = useState({ name: '', dept: '', rollNo: '' });
   const [error, setError] = useState('');
 
@@ -157,112 +208,135 @@ const LoginScreen = ({ onLogin, onAdminAccess }) => {
       setError('All fields are required.');
       return;
     }
+    const isStarted = getRoundStatus();
+    const existing = participants.find(p => p.rollNo === formData.rollNo);
+    if (isStarted && !existing) {
+      setError('The round has already started. Late entries are not permitted.');
+      return;
+    }
     onLogin(formData);
   };
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-8 relative">
+      <div className="max-w-md w-full bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center p-3 bg-green-500/10 rounded-xl border border-green-500/20 mb-4">
             <Terminal className="text-green-500 w-8 h-8" />
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-tight uppercase">Round 2</h1>
-          <p className="text-sm text-gray-500 mt-2">Error Out: Debugging Challenge</p>
+          <h1 className="text-3xl font-bold text-white uppercase tracking-tight">Round 2</h1>
+          <p className="text-sm text-gray-500 mt-2 tracking-widest uppercase">The Debugging Engine</p>
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Full Name</label>
-            <div className="relative">
-              <User className="absolute left-3 top-3 w-5 h-5 text-gray-600" />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
+            <input 
+              type="text" placeholder="Full Name" 
+              className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-green-500 outline-none transition-all"
+              value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
+            />
+            <div className="grid grid-cols-2 gap-4">
+              <select 
+                className="bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-green-500 outline-none"
+                value={formData.dept} onChange={e => setFormData({...formData, dept: e.target.value})}
+              >
+                <option value="">Dept</option>
+                <option value="IT">IT</option><option value="CS">CS</option><option value="BA">BA</option>
+                <option value="BMS">BMS</option><option value="BAF">BAF</option><option value="Biotech">Biotech</option>
+              </select>
               <input 
-                type="text" 
-                className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-green-500 focus:outline-none transition-all"
-                placeholder="Enter your name"
-                value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
+                type="text" placeholder="Roll No" 
+                className="bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-green-500 outline-none"
+                value={formData.rollNo} onChange={e => setFormData({...formData, rollNo: e.target.value})}
               />
             </div>
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Dept</label>
-              <div className="relative">
-                <Building className="absolute left-3 top-3 w-5 h-5 text-gray-600" />
-                <select 
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-green-500 focus:outline-none appearance-none"
-                  value={formData.dept}
-                  onChange={e => setFormData({...formData, dept: e.target.value})}
-                >
-                  <option value="">Select</option>
-                  <option value="IT">IT</option>
-                  <option value="CS">CS</option>
-                  <option value="BA">BA</option>
-                  <option value="BMS">BMS</option>
-                  <option value="BAF">BAF</option>
-                  <option value="Biotech">Biotech</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Roll No</label>
-              <div className="relative">
-                <Hash className="absolute left-3 top-3 w-5 h-5 text-gray-600" />
-                <input 
-                  type="text" 
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 pl-10 pr-4 text-white focus:border-green-500 focus:outline-none transition-all"
-                  placeholder="e.g. 101"
-                  value={formData.rollNo}
-                  onChange={e => setFormData({...formData, rollNo: e.target.value})}
-                />
-              </div>
-            </div>
-          </div>
-
-          {error && <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-red-400 text-xs flex gap-2"><AlertCircle className="w-4 h-4"/>{error}</div>}
-
-          <button className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3.5 rounded-lg shadow-lg transition-all mt-6">
-            START ROUND
+          {error && <p className="text-red-400 text-xs italic bg-red-500/10 p-2 rounded border border-red-500/20">{error}</p>}
+          <button className="w-full bg-green-600 hover:bg-green-500 text-white font-black py-4 rounded-xl shadow-lg transition-all active:scale-95 text-lg uppercase tracking-widest">
+            LOGIN & START
           </button>
         </form>
-
         <div className="mt-8 pt-6 border-t border-gray-800 flex justify-center">
-          <button onClick={onAdminAccess} className="text-xs font-bold text-gray-600 hover:text-white flex items-center gap-2 transition-colors">
-            <Lock className="w-3 h-3" /> ADMIN PORTAL
-          </button>
+          <button onClick={onAdminAccess} className="text-xs text-gray-600 hover:text-white flex items-center gap-2 transition-colors"><Lock className="w-3 h-3" /> ADMIN PORTAL</button>
         </div>
       </div>
     </div>
   );
 };
 
-// 2. ADMIN DASHBOARD
+const WaitingLobby = ({ user, onStart }) => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (getRoundStatus()) onStart();
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [onStart]);
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-gray-900 border border-gray-800 rounded-2xl p-10 text-center shadow-2xl">
+        <Loader2 className="w-12 h-12 text-green-500 animate-spin mx-auto mb-6" />
+        <h2 className="text-2xl font-bold text-white mb-2 tracking-tight uppercase">Waiting Room</h2>
+        <p className="text-sm text-gray-500 mb-8 italic">Standby, <span className="text-green-400 font-bold">{user?.name}</span>. The challenge will begin shortly when the admin triggers the start signal.</p>
+        <div className="bg-gray-950 border border-gray-800 rounded-xl p-4 text-[10px] flex justify-between uppercase font-bold text-gray-500 tracking-widest">
+           <span>Status: Ready</span>
+           <span className="text-green-500">{user?.participantCode}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AdminDashboard = ({ participants, onLogout, onClearData }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [expandedCode, setExpandedCode] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => localStorage.getItem('round2_admin_auth') === 'true');
+  const [isRoundStarted, setIsRoundStarted] = useState(getRoundStatus());
+  const [expandedUser, setExpandedUser] = useState(null);
 
   const handleAuth = (e) => {
     e.preventDefault();
-    if (password === 'admin') setIsAuthenticated(true);
-    else alert('Invalid Password');
+    if (password === 'admin') {
+      setIsAuthenticated(true);
+      localStorage.setItem('round2_admin_auth', 'true');
+    }
+    else alert('Invalid Access Key');
   };
 
-  const downloadExcel = () => {
-    const headers = ['Rank,Name,Dept,RollNo,ParticipantCode,Status,Score'];
-    const rows = participants
-      .sort((a, b) => (b.score || 0) - (a.score || 0))
-      .map((p, idx) => `${idx + 1},${p.name},${p.dept},${p.rollNo},${p.participantCode},${p.status},${p.score}`);
+  const toggleRound = () => {
+    const newState = !isRoundStarted;
+    setIsRoundStarted(newState);
+    localStorage.setItem('round2_started', newState.toString());
+  };
+
+  const getStatus = (p) => {
+    if (p.status === 'COMPLETED') return { label: 'Completed', color: 'text-green-500', icon: CheckCircle2 };
+    if (p.lastSeen && Date.now() - p.lastSeen < 20000) {
+      return { label: 'Active', color: 'text-blue-500', icon: Activity };
+    }
+    return { label: 'Logout', color: 'text-red-500', icon: Circle };
+  };
+
+  const downloadCSV = () => {
+    const sorted = [...participants].sort((a, b) => (b.score || 0) - (a.score || 0));
+    const headers = ["Rank", "Name", "Roll No", "ID Code", "Dept", "Status", "Score"];
+    const rows = sorted.map((p, i) => [
+      i + 1,
+      `"${p.name}"`,
+      p.rollNo,
+      p.participantCode,
+      p.dept,
+      getStatus(p).label,
+      p.score || 0
+    ]);
     
-    const csvContent = "data:text/csv;charset=utf-8," + headers.concat(rows).join("\n");
+    let csvContent = "data:text/csv;charset=utf-8," 
+      + headers.join(",") + "\n" 
+      + rows.map(e => e.join(",")).join("\n");
+
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "round2_results.csv");
+    link.setAttribute("download", "Round_2_Results.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -271,164 +345,160 @@ const AdminDashboard = ({ participants, onLogout, onClearData }) => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center font-mono">
-        <div className="max-w-sm w-full bg-gray-900 border border-gray-800 rounded-xl p-8">
-          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <LayoutDashboard className="text-green-500" /> Admin Portal
-          </h2>
-          <form onSubmit={handleAuth} className="space-y-4">
-            <input 
-              type="password" 
-              className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-green-500 focus:outline-none"
-              placeholder="Enter Access Key"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-            <button className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-all">LOGIN</button>
-            <button type="button" onClick={onLogout} className="w-full text-gray-500 text-xs py-2 hover:text-white">Back to Student Login</button>
-          </form>
-        </div>
+        <form onSubmit={handleAuth} className="bg-gray-900 p-8 rounded-xl border border-gray-800 space-y-4 max-w-sm w-full shadow-2xl">
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2 font-mono uppercase tracking-widest"><LayoutDashboard className="text-green-500" /> Admin Login</h2>
+          <input type="password" placeholder="Enter Access Key" className="w-full bg-gray-950 border border-gray-800 rounded-lg py-3 px-4 text-white focus:border-green-500 outline-none" value={password} onChange={e => setPassword(e.target.value)} />
+          <button className="w-full bg-green-600 font-bold py-3 rounded-lg text-white hover:bg-green-500 transition-colors">AUTHENTICATE</button>
+          <button type="button" onClick={onLogout} className="w-full text-gray-500 text-xs py-2 hover:text-white">Student Login</button>
+        </form>
       </div>
     );
   }
 
   const filtered = participants.filter(p => 
-    (p.name || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
-    (p.rollNo || '').includes(searchTerm) ||
-    (p.participantCode || '').toLowerCase().includes(searchTerm.toLowerCase())
+    p.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    p.rollNo?.includes(searchTerm)
   );
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-300 font-mono p-6">
-      <div className="max-w-7xl mx-auto">
-        <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-6 border-b border-gray-800 gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Terminal className="text-green-500" /> ROUND 2 <span className="px-2 py-0.5 rounded bg-green-500/10 text-green-400 text-xs border border-green-500/20 uppercase">Admin</span>
-            </h1>
-            <p className="text-sm text-gray-500 mt-1">Live Participant Analytics & Source Editor Review</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <button onClick={downloadExcel} className="px-4 py-2 bg-blue-600/10 hover:bg-blue-600/20 border border-blue-600/30 text-blue-400 rounded-lg text-xs font-bold flex items-center gap-2 transition-all">
-              <Download className="w-4 h-4" /> PRINT EXCEL (CSV)
-            </button>
-            <button onClick={onClearData} className="px-4 py-2 bg-red-600/10 hover:bg-red-600/20 border border-red-600/30 text-red-400 rounded-lg text-xs font-bold flex items-center gap-2 transition-all">
-              <Trash2 className="w-4 h-4" /> CLEAR ENTRIES
-            </button>
-            <button onClick={onLogout} className="px-4 py-2 bg-gray-900 hover:bg-gray-800 border border-gray-700 rounded-lg text-xs font-bold flex items-center gap-2 transition-all">
-              <LogOut className="w-4 h-4" /> LOGOUT
-            </button>
-          </div>
-        </header>
+      <header className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-800 pb-6 gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-white uppercase flex items-center gap-2"><Terminal className="text-green-500" /> Control Dashboard</h1>
+          <p className="text-xs text-gray-500 uppercase tracking-widest mt-1">Live Participant Analytics</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <button onClick={downloadCSV} className="px-4 py-2 bg-blue-600/10 border border-blue-600/30 text-blue-400 rounded-lg text-xs font-bold flex items-center gap-2 hover:bg-blue-600/20">
+            <FileSpreadsheet className="w-4 h-4" /> EXCEL EXPORT
+          </button>
+          <button onClick={onClearData} className="px-4 py-2 bg-red-900/10 border border-red-900/30 text-red-400 rounded-lg text-xs font-bold hover:bg-red-900/20">RESET DATA</button>
+          <button onClick={() => {
+            localStorage.removeItem('round2_admin_auth');
+            onLogout();
+          }} className="px-4 py-2 bg-gray-900 border border-gray-800 rounded-lg text-xs font-bold hover:bg-gray-800">LOGOUT</button>
+        </div>
+      </header>
 
-        <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-xl">
-          <div className="p-4 border-b border-gray-800 flex flex-col sm:flex-row justify-between items-center bg-gray-900/50 gap-4">
-            <h3 className="font-bold text-white flex items-center gap-2">Participant Leaderboard</h3>
+      <div className="max-w-7xl mx-auto space-y-12">
+        {/* BIG CENTERED START BUTTON */}
+        <div className="flex flex-col items-center justify-center py-16 bg-gray-900/30 border border-gray-800 rounded-[3rem] shadow-2xl">
+           <h2 className="text-gray-500 text-xs font-bold uppercase tracking-[0.5em] mb-8">Round 2 Master Trigger</h2>
+           <button 
+             onClick={toggleRound} 
+             className={`px-24 py-10 rounded-3xl text-3xl font-black transition-all flex flex-col items-center gap-4 border-8 transform hover:scale-105 active:scale-95 ${
+               isRoundStarted 
+               ? 'bg-red-600/10 border-red-600/30 text-red-500 shadow-[0_0_50px_rgba(220,38,38,0.25)]' 
+               : 'bg-green-600/10 border-green-600/30 text-green-500 shadow-[0_0_50px_rgba(22,163,74,0.25)]'
+             }`}
+           >
+             {isRoundStarted ? <StopCircle className="w-12 h-12" /> : <PlayCircle className="w-12 h-12" />}
+             {isRoundStarted ? 'STOP ROUND' : 'START ROUND'}
+             <span className="text-xs font-bold tracking-[0.2em] mt-2 opacity-50 uppercase">
+                {isRoundStarted ? 'LOCKED (NO NEW ENTRIES)' : 'OPENING FOR WAITING STUDENTS'}
+             </span>
+           </button>
+        </div>
+
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
+          <div className="p-4 bg-black/30 flex flex-col sm:flex-row justify-between items-center border-b border-gray-800 gap-4">
+            <h3 className="font-bold text-white uppercase text-sm tracking-widest">Active Leaderboard</h3>
             <div className="relative w-full sm:w-80">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-500" />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-600" />
               <input 
                 type="text" 
-                className="w-full bg-gray-950 border border-gray-800 rounded-lg py-2 pl-9 pr-4 text-sm text-white focus:border-green-500 focus:outline-none"
-                placeholder="Search name, roll, or ID code..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
+                placeholder="Search Name or Roll No..." 
+                className="w-full bg-gray-950 border border-gray-800 rounded-lg py-2 pl-10 pr-4 text-xs outline-none focus:border-green-500" 
+                value={searchTerm} 
+                onChange={e => setSearchTerm(e.target.value)} 
               />
             </div>
           </div>
+          
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-gray-950 text-gray-400 uppercase text-[10px] tracking-wider font-bold">
+              <thead className="bg-black/50 text-gray-500 uppercase text-[10px] font-bold tracking-widest border-b border-gray-800">
                 <tr>
                   <th className="px-6 py-4">Rank</th>
-                  <th className="px-6 py-4">Participant Details</th>
-                  <th className="px-6 py-4 text-center">Source Editor</th>
-                  <th className="px-6 py-4">Status</th>
+                  <th className="px-6 py-4">Participant</th>
+                  <th className="px-6 py-4">Dept</th>
+                  <th className="px-6 py-4 text-center">Live Status</th>
+                  <th className="px-6 py-4 text-center">Review</th>
                   <th className="px-6 py-4 text-right">Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                {filtered.sort((a,b) => (b.score || 0) - (a.score || 0)).map((p, idx) => (
-                  <React.Fragment key={p.rollNo}>
-                    <tr className="hover:bg-gray-800/50 transition-colors">
-                      <td className="px-6 py-4 text-gray-500 font-mono">#{idx + 1}</td>
-                      <td className="px-6 py-4">
+                {filtered.sort((a,b) => (b.score || 0) - (a.score || 0)).map((p, idx) => {
+                  const statusInfo = getStatus(p);
+                  const StatusIcon = statusInfo.icon;
+                  return (
+                    <React.Fragment key={p.rollNo}>
+                      <tr className={`hover:bg-gray-800/30 transition-colors ${expandedUser === p.rollNo ? 'bg-gray-800/50' : ''}`}>
+                        <td className="px-6 py-4 text-gray-600 font-mono italic">#{idx + 1}</td>
+                        <td className="px-6 py-4">
                           <div className="font-bold text-white">{p.name}</div>
-                          <div className="text-[10px] text-gray-500 uppercase flex items-center gap-2">
-                             <span className="bg-gray-800 px-1.5 py-0.5 rounded text-gray-400 font-mono">{p.rollNo}</span>
-                             <span>•</span>
-                             <span className="text-green-400 font-bold bg-green-500/10 px-1 rounded flex items-center gap-1">
-                                <Ticket className="w-2 h-2" /> {p.participantCode}
-                             </span>
-                          </div>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <button 
-                          onClick={() => setExpandedCode(expandedCode === p.rollNo ? null : p.rollNo)}
-                          disabled={!p.submittedAnswers}
-                          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                            p.submittedAnswers 
-                            ? 'bg-green-600/10 text-green-400 hover:bg-green-600/20 border border-green-500/30 shadow-sm' 
-                            : 'bg-gray-800 text-gray-600 cursor-not-allowed border border-gray-700'
-                          }`}
-                        >
-                          <Code className="w-3.5 h-3.5" />
-                          {expandedCode === p.rollNo ? 'Hide' : 'Review Code'}
-                          {expandedCode === p.rollNo ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                        </button>
-                      </td>
-                      <td className="px-6 py-4">
-                        {p.status === 'COMPLETED' ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20 uppercase tracking-tighter">
-                            <CheckCircle2 className="w-3 h-3" /> FINISHED
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 uppercase tracking-tighter">
-                            <Activity className="w-3 h-3" /> ATTEMPTING
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <span className="font-mono text-green-400 font-bold text-lg">{p.score || 0}</span>
-                      </td>
-                    </tr>
-                    {expandedCode === p.rollNo && p.submittedAnswers && (
-                      <tr className="bg-black/50">
-                        <td colSpan="5" className="px-6 py-4">
-                          <div className="space-y-6">
-                            <div className="flex items-center gap-3">
-                              <div className="h-px flex-1 bg-gray-800"></div>
-                              <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Participant Submissions</span>
-                              <div className="h-px flex-1 bg-gray-800"></div>
-                            </div>
-                            <div className="grid grid-cols-1 gap-6">
-                              {p.submittedAnswers.map((ans, qIdx) => (
-                                <div key={qIdx} className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden shadow-lg">
-                                  <div className="px-4 py-2 bg-gray-900 border-b border-gray-800 flex justify-between items-center">
-                                    <span className="text-xs font-bold text-gray-300 flex items-center gap-2">
-                                      <span className="bg-gray-800 text-gray-500 w-5 h-5 rounded flex items-center justify-center text-[10px]">{qIdx + 1}</span>
-                                      {QUESTIONS[qIdx].title}
-                                    </span>
-                                    <span className={`text-[10px] font-bold uppercase flex items-center gap-1.5 ${ans.status === 'PASS' ? 'text-green-400' : 'text-red-400'}`}>
-                                      {ans.status === 'PASS' ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                                      {ans.status === 'PASS' ? 'LOGIC PASSED' : 'BUG REMAINING'}
-                                    </span>
-                                  </div>
-                                  <pre className="p-4 text-[11px] font-mono text-green-300 overflow-x-auto whitespace-pre-wrap leading-relaxed bg-[#050505]">
-                                    {ans.code}
-                                  </pre>
-                                </div>
-                              ))}
-                            </div>
+                          <div className="text-[10px] text-gray-500 flex gap-2 uppercase font-mono">
+                            <span>Roll: {p.rollNo}</span>
+                            <span>•</span>
+                            <span className="text-green-600 font-bold">{p.participantCode}</span>
                           </div>
                         </td>
+                        <td className="px-6 py-4">
+                           <span className="px-2 py-0.5 rounded bg-gray-800 text-gray-400 text-[10px] font-bold uppercase">{p.dept || 'N/A'}</span>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border ${statusInfo.color.replace('text-', 'bg-').replace('-500', '-500/10')} ${statusInfo.color.replace('text-', 'border-').replace('-500', '-500/20')} ${statusInfo.color}`}>
+                            <StatusIcon className="w-3 h-3" />
+                            {statusInfo.label}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <button 
+                            onClick={() => setExpandedUser(expandedUser === p.rollNo ? null : p.rollNo)}
+                            className="text-gray-400 hover:text-white transition-colors p-2"
+                          >
+                            {expandedUser === p.rollNo ? <ChevronUp className="w-5 h-5 text-green-500" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <span className="font-mono text-green-400 font-bold text-lg">{p.score || 0}<span className="text-[10px] text-gray-600 ml-1">/100</span></span>
+                        </td>
                       </tr>
-                    )}
-                  </React.Fragment>
-                ))}
-                {filtered.length === 0 && (
-                  <tr>
-                    <td colSpan="5" className="px-6 py-12 text-center text-gray-600 italic">No participant records found.</td>
-                  </tr>
-                )}
+                      {expandedUser === p.rollNo && (
+                        <tr className="bg-black/40">
+                          <td colSpan="6" className="p-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                              {QUESTIONS.map((q, qIdx) => {
+                                const ans = p.progress?.[qIdx] || { status: 'UNATTEMPTED', code: q.initialCode };
+                                return (
+                                  <div key={q.id} className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-lg border-l-4 border-l-gray-700">
+                                    <div className="bg-black/30 p-3 flex justify-between items-center border-b border-gray-800">
+                                      <div>
+                                        <span className="text-[10px] font-bold text-gray-500 uppercase block tracking-tighter">Snippet {qIdx + 1}</span>
+                                        <span className="text-sm font-bold text-white">{q.title}</span>
+                                      </div>
+                                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${ans.status === 'PASS' ? 'text-green-500 border-green-500/30 bg-green-500/10' : 'text-gray-500 border-gray-700'}`}>
+                                        {ans.status === 'PASS' ? 'VERIFIED (16pts)' : `PARTIAL (${ans.partialPoints || 0}pts)`}
+                                      </span>
+                                    </div>
+                                    <div className="p-4 space-y-3">
+                                      <div className="bg-black/20 p-2 rounded border border-gray-800/50">
+                                        <span className="text-[9px] font-bold text-green-600 uppercase block mb-1">Score Criteria</span>
+                                        <p className="text-[11px] text-gray-400 leading-relaxed italic">{q.objective}</p>
+                                      </div>
+                                      <pre className="bg-[#050505] p-3 rounded-lg text-[10px] font-mono text-blue-100 overflow-x-auto border border-gray-800 leading-relaxed whitespace-pre-wrap">
+                                        {ans.code}
+                                      </pre>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -438,202 +508,203 @@ const AdminDashboard = ({ participants, onLogout, onClearData }) => {
   );
 };
 
-// 3. EXAM SESSION
-const ExamSession = ({ user, onComplete }) => {
+const ExamSession = ({ user, onComplete, onProgressUpdate }) => {
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [logs, setLogs] = useState([]);
-  const [answers, setAnswers] = useState(QUESTIONS.map(q => ({ 
-    code: q.initialCode, 
-    status: 'UNATTEMPTED' 
-  })));
+  const [answers, setAnswers] = useState(user?.progress || QUESTIONS.map(q => ({ code: q.initialCode, status: 'UNATTEMPTED', partialPoints: 0 })));
+
+  useEffect(() => { setLogs([]); }, [currentQIndex]);
+  
+  useEffect(() => {
+    onProgressUpdate(answers);
+  }, [answers]);
 
   useEffect(() => {
     if (completed) return;
-    const timer = setInterval(() => {
-      setTimeLeft(t => (t <= 1 ? 0 : t - 1));
-    }, 1000);
+    const timer = setInterval(() => setTimeLeft(t => t > 0 ? t - 1 : 0), 1000);
     return () => clearInterval(timer);
   }, [completed]);
 
-  const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  };
-
-  const handleRun = () => {
+  const handleRun = async () => {
     setIsRunning(true);
-    setLogs(["> node debugger.js: Initializing logic scan...", "> Analyzing participant input for syntax errors..."]);
-    
-    setTimeout(() => {
-      const passed = QUESTIONS[currentQIndex].validator(answers[currentQIndex].code);
+    setLogs(["> Initializing verification environment...", "> Scanning source logic..."]);
+
+    try {
+      const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+        method: "POST",
+        body: JSON.stringify({
+          language: "javascript",
+          version: "18.15.0",
+          files: [{ content: answers[currentQIndex].code }]
+        })
+      });
+
+      const data = await response.json();
+      const output = data.run.stdout.trim();
+      const passed = output === QUESTIONS[currentQIndex].expectedOutput;
       const updated = [...answers];
-      updated[currentQIndex].status = passed ? 'PASS' : 'FAIL';
-      setAnswers(updated);
       
+      let currentFixes = 0;
+      QUESTIONS[currentQIndex].fixChecks.forEach(pattern => {
+        if (pattern.test(answers[currentQIndex].code)) currentFixes++;
+      });
+      
+      updated[currentQIndex].partialPoints = currentFixes * 2;
+      updated[currentQIndex].status = passed ? "PASS" : "FAIL";
+
+      const newLogs = [];
       if (passed) {
-        setLogs(prev => [...prev, "✓ Debugging Successful: Logical errors resolved.", "Snippet matches intended behavior."]);
+        newLogs.push(`> OUTPUT: ${output}`);
+        newLogs.push("✓ CRITERIA MATCHED: Bug resolved successfully.");
       } else {
-        setLogs(prev => [...prev, "⚠ Verification Error: Bugs still present.", "Snippet failed to meet the objective criteria."]);
+        newLogs.push("⚠ There are still syntax and logical errors are present!");
       }
-      setIsRunning(false);
-    }, 1200);
+      
+      setLogs(newLogs);
+      setAnswers(updated);
+    } catch (err) {
+      setLogs(["⚠ There are still syntax and logical errors are present!"]);
+    }
+    setIsRunning(false);
   };
 
   const handleFinish = () => {
-    const score = Math.round((answers.filter(a => a.status === 'PASS').length / QUESTIONS.length) * 100);
-    // Pass current answers to onComplete to save Source Editor content for Admin view
-    onComplete({ score, status: 'COMPLETED', submittedAnswers: answers });
+    let totalScore = 0;
+    let passedAll = true;
+
+    answers.forEach(ans => {
+        if (ans.status === 'PASS') totalScore += 16;
+        else {
+            totalScore += (ans.partialPoints || 0);
+            passedAll = false;
+        }
+    });
+
+    if (passedAll && timeLeft > 0) totalScore += 4;
+    const finalScore = Math.min(100, totalScore);
+
+    onComplete({ score: finalScore, status: 'COMPLETED', progress: answers });
     setCompleted(true);
   };
 
-  const currentQ = QUESTIONS[currentQIndex];
-  const currentAnswer = answers[currentQIndex];
-
   if (completed) {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-8 text-center font-mono">
-        <CheckCircle2 className="w-20 h-20 text-green-500 mb-6" />
-        <h1 className="text-4xl font-bold text-white mb-2 tracking-tighter">ROUND 2 SUBMITTED</h1>
-        <div className="bg-green-500/10 border border-green-500/20 px-6 py-4 rounded-xl mb-8">
-            <span className="text-[10px] text-green-400 uppercase block mb-1 tracking-[0.2em] font-bold">Unique Entry Receipt</span>
-            <span className="text-white font-bold text-2xl tracking-widest">{user?.participantCode}</span>
+      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-8 text-center font-mono text-white">
+        <div className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center border-4 border-green-500/30 mb-8 animate-bounce">
+          <CheckCircle2 className="w-12 h-12 text-green-500" />
         </div>
-        <button onClick={() => window.location.reload()} className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-lg font-bold transition-all shadow-lg">
-          Round 3
-        </button>
+        
+        <h1 className="text-4xl md:text-5xl font-black mb-4 uppercase italic tracking-tighter">
+           Challenge Submitted!
+        </h1>
+        
+        <div className="max-w-2xl mb-12">
+           <h2 className="text-4xl font-bold text-green-400 mb-4">{user?.name} 🌟</h2>
+           <p className="text-gray-400 text-lg leading-relaxed">
+             For completing the <span className="text-white font-bold uppercase tracking-widest">Error Out</span> round successfully, you did a great job! 🎉 
+             Your logical debugging skills are impressive. Now moving forward to the next challenge! 💪
+           </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-6">
+          <button 
+            onClick={() => window.location.href = '/round_3'} 
+            className="px-12 py-5 bg-green-600 hover:bg-green-500 text-white rounded-[2rem] font-black text-xl transition-all shadow-[0_0_40px_rgba(22,163,74,0.4)] active:scale-95 flex items-center gap-3"
+          >
+            PROCEED TO ROUND 3 <ArrowRight className="w-7 h-7" />
+          </button>
+          
+          <button 
+            onClick={() => {
+                localStorage.removeItem('round2_current_roll');
+                localStorage.removeItem('round2_view');
+                window.location.reload();
+            }} 
+            className="px-8 py-5 bg-gray-900 border border-gray-800 text-gray-400 rounded-[2rem] font-bold transition-all hover:bg-gray-800"
+          >
+            LOGOUT
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex flex-col">
-      <nav className="h-16 border-b border-gray-800 bg-[#0a0d12] flex items-center justify-between px-6 sticky top-0 z-50">
+    <div className="min-h-screen bg-gray-950 text-gray-300 font-mono flex flex-col h-screen overflow-hidden">
+      <nav className="h-16 border-b border-gray-800 bg-[#0a0d12] flex items-center justify-between px-6 shrink-0 z-50">
         <div className="flex items-center gap-3">
           <Terminal className="text-green-500 w-6 h-6" />
           <div>
-            <h1 className="font-bold text-white tracking-widest uppercase text-sm">Round 2</h1>
-            <div className="flex items-center gap-2 text-[10px]">
-                <span className="text-green-400 font-bold bg-green-500/10 px-1 rounded">{user?.participantCode}</span>
-                <span className="text-gray-600">/</span>
-                <span className="text-gray-500 uppercase">{user?.name}</span>
-            </div>
+            <h1 className="font-bold text-white uppercase text-xs italic tracking-widest">Round 2: Error Out</h1>
+            <div className="text-[9px] text-gray-500 font-bold uppercase"><span className="text-green-600">{user?.name}</span> • Roll: {user?.rollNo}</div>
           </div>
         </div>
-        <div className="flex items-center gap-6">
-          <div className={`flex items-center gap-2 px-4 py-1.5 rounded-lg border ${timeLeft < 300 ? 'bg-red-500/10 border-red-500/30 text-red-400 animate-pulse' : 'bg-gray-900 border-gray-800 text-green-400'} font-bold`}>
-            <Clock className="w-4 h-4" />
-            {formatTime(timeLeft)}
-          </div>
-          <div className="flex gap-1.5">
-            {answers.map((ans, i) => (
-              <div key={i} className={`w-3.5 h-3.5 rounded-sm transition-all ${i === currentQIndex ? 'bg-white ring-2 ring-green-500' : ans.status === 'PASS' ? 'bg-green-500' : ans.status === 'FAIL' ? 'bg-red-500' : 'bg-gray-800'}`} />
-            ))}
-          </div>
+        <div className="bg-gray-900 px-4 py-1.5 rounded-lg border border-gray-800 text-green-400 font-black shadow-inner">
+            {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
         </div>
       </nav>
 
-      <main className="flex-1 overflow-y-auto p-4 md:p-6 max-w-6xl mx-auto w-full flex flex-col gap-4">
-        <section className="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 shadow-xl border-l-4 border-l-green-500">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-3">
-              <span className="bg-green-900/30 text-green-400 px-2 py-0.5 rounded text-[10px] font-bold border border-green-500/20 uppercase tracking-tighter">Snippet {currentQIndex + 1}</span>
-              <h2 className="text-xl font-bold text-white tracking-tight">{currentQ.title}</h2>
+      <main className="flex-1 flex flex-col lg:flex-row p-4 gap-4 overflow-hidden bg-[#05070a]">
+        <div className="lg:w-1/3 flex flex-col gap-4 overflow-hidden shrink-0">
+            <section className="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 border-l-4 border-l-green-500 shadow-xl overflow-y-auto">
+                <span className="text-[10px] font-bold bg-green-500/10 text-green-400 px-2 py-1 rounded border border-green-500/20 uppercase">Task {currentQIndex + 1}</span>
+                <h2 className="text-xl font-bold text-white mb-2 tracking-tight">{QUESTIONS[currentQIndex].title}</h2>
+                <p className="text-xs text-gray-400 leading-relaxed bg-black/40 p-4 rounded-xl border border-gray-800/50 italic">{QUESTIONS[currentQIndex].objective}</p>
+                <div className="mt-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                  {answers.map((ans, i) => (
+                    <button key={i} onClick={() => setCurrentQIndex(i)} className={`w-10 h-10 rounded-lg shrink-0 text-xs font-bold border transition-all ${i === currentQIndex ? 'bg-white text-black border-white' : ans.status === 'PASS' ? 'bg-green-500/20 border-green-500/30 text-green-400' : 'bg-gray-800 border-gray-700 text-gray-500'}`}>{i + 1}</button>
+                  ))}
+                </div>
+            </section>
+            <section className="bg-black border border-gray-800 rounded-2xl flex flex-1 flex-col overflow-hidden shadow-2xl min-h-0">
+                <div className="bg-[#111] p-2 px-5 border-b border-gray-800 flex items-center gap-2"><Cpu className="w-3.5 h-3.5 text-gray-500" /><span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Verification Console</span></div>
+                <div className="p-4 font-mono text-[11px] overflow-y-auto flex-1 leading-relaxed custom-scrollbar">
+                    {logs.length === 0 ? <p className="text-gray-700 italic">// Environment Ready. Debug the logic and click TEST SNIPPET.</p> : 
+                    logs.map((log, i) => <pre key={i} className={`whitespace-pre-wrap break-all ${log.startsWith('✓') ? 'text-green-400 font-bold' : log.startsWith('⚠') ? 'text-red-400' : 'text-blue-400'}`}>{log}</pre>)}
+                </div>
+            </section>
+        </div>
+
+        <div className="lg:w-2/3 flex flex-col bg-[#0d1117] border border-gray-800 rounded-3xl shadow-2xl overflow-hidden relative h-full">
+            <div className="bg-[#161b22] p-3 px-6 border-b border-gray-800 flex justify-between items-center text-[10px] text-gray-400 uppercase font-black tracking-widest shrink-0">
+                <div className="flex items-center gap-2 font-mono"><Code2 className="w-4 h-4 text-green-500" /> debugger_script.js</div>
+                {answers[currentQIndex].status === 'PASS' && <span className="text-green-400 font-black animate-pulse flex items-center gap-1"><CheckCircle2 className="w-3 h-3"/> VERIFIED</span>}
             </div>
-            <span className={`text-[10px] font-bold px-2 py-1 rounded border ${currentQ.difficulty === 'HARD' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-green-500/10 text-green-400 border-green-500/20'}`}>
-              {currentQ.difficulty}
-            </span>
-          </div>
-          <p className="text-sm text-gray-400 leading-relaxed border-l-2 border-green-500/20 pl-4">{currentQ.objective}</p>
-        </section>
-
-        <section className="flex-1 flex flex-col bg-[#0d1117] border border-gray-800 rounded-2xl flex flex-col shadow-2xl overflow-hidden min-h-[450px]">
-          <div className="bg-[#161b22] p-3 px-5 border-b border-gray-800 flex justify-between items-center text-[10px] text-gray-400 uppercase font-bold tracking-widest">
-            <div className="flex items-center gap-2"><Code2 className="w-4 h-4 text-green-400" /> debugger_core.js</div>
-            <div className="flex items-center gap-3">
-               {currentAnswer.status === 'PASS' && <span className="text-green-500 flex items-center gap-1"><CheckCircle2 className="w-3 h-3"/> CLEAN CODE</span>}
-               {currentAnswer.status === 'FAIL' && <span className="text-red-500 flex items-center gap-1"><XCircle className="w-3 h-3"/> BUG DETECTED</span>}
+            <div className="flex-1 overflow-hidden relative group">
+                <textarea 
+                    spellCheck="false"
+                    className="w-full h-full bg-transparent p-8 font-mono text-sm focus:outline-none resize-none text-blue-100 leading-relaxed selection:bg-green-500/20"
+                    value={answers[currentQIndex].code}
+                    onChange={e => {
+                        const up = [...answers];
+                        up[currentQIndex].code = e.target.value;
+                        setAnswers(up);
+                    }}
+                />
             </div>
-          </div>
-          <div className="flex-1 flex overflow-hidden">
-            <div className="w-12 bg-[#0d1117] border-r border-gray-800/50 flex flex-col items-end pr-3 pt-6 text-gray-600 text-[11px] font-mono select-none">
-              {Array.from({length: 30}).map((_, i) => <div key={i} className="h-6 leading-6">{i+1}</div>)}
+            <div className="p-5 bg-[#161b22]/90 border-t border-gray-800 flex justify-between items-center px-10 shrink-0">
+                <div className="flex gap-4">
+                    <button disabled={currentQIndex === 0} onClick={() => setCurrentQIndex(i => i - 1)} className="text-[10px] font-black text-gray-600 hover:text-white disabled:opacity-30 uppercase tracking-widest transition-all">BACK</button>
+                    <button disabled={currentQIndex === QUESTIONS.length - 1} onClick={() => setCurrentQIndex(i => i + 1)} className="text-[10px] font-black text-gray-600 hover:text-white disabled:opacity-30 uppercase tracking-widest transition-all">NEXT</button>
+                </div>
+                <div className="flex items-center gap-4">
+                    <button onClick={handleRun} disabled={isRunning} className="bg-green-600 hover:bg-green-500 text-white px-10 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] flex items-center gap-2 active:scale-95">
+                        {isRunning ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
+                        TEST SNIPPET
+                    </button>
+                    {currentQIndex === QUESTIONS.length - 1 && <button onClick={handleFinish} className="bg-white text-black px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-200 shadow-lg active:scale-95">FINISH</button>}
+                </div>
             </div>
-            <textarea 
-              value={answers[currentQIndex].code}
-              onChange={e => {
-                const up = [...answers];
-                up[currentQIndex].code = e.target.value;
-                setAnswers(up);
-              }}
-              spellCheck="false"
-              className="flex-1 bg-transparent p-6 pt-6 font-mono text-sm focus:outline-none resize-none text-blue-100 leading-6"
-            />
-          </div>
-          
-          <div className="p-4 bg-[#161b22] border-t border-gray-800 flex justify-between items-center">
-            <button 
-              disabled={currentQIndex === 0}
-              onClick={() => setCurrentQIndex(i => i - 1)}
-              className="text-[10px] font-bold text-gray-500 hover:text-white disabled:opacity-30 uppercase tracking-widest flex items-center gap-1"
-            >
-              <ChevronLeft className="w-3 h-3" /> Prev
-            </button>
-
-            <button 
-              onClick={handleRun}
-              disabled={isRunning}
-              className="bg-green-600 hover:bg-green-500 text-white px-10 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(34,197,94,0.3)] flex items-center gap-2"
-            >
-              {isRunning ? <Activity className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
-              Test Snippet
-            </button>
-
-            {currentQIndex === QUESTIONS.length - 1 ? (
-              <button onClick={handleFinish} className="text-[10px] font-bold text-green-500 hover:text-green-400 uppercase tracking-widest flex items-center gap-1 transition-colors">
-                Final Submission <Flag className="w-3 h-3" />
-              </button>
-            ) : (
-              <button onClick={() => setCurrentQIndex(i => i + 1)} className="text-[10px] font-bold text-gray-500 hover:text-white uppercase tracking-widest flex items-center gap-1 transition-colors">
-                Next Bug <ChevronRight className="w-3 h-3" />
-              </button>
-            )}
-          </div>
-        </section>
-
-        <section className="bg-black border border-gray-800 rounded-2xl flex flex-col overflow-hidden h-40 shadow-2xl mb-8">
-          <div className="bg-[#111] p-2 px-5 border-b border-gray-800 flex items-center gap-2">
-            <Cpu className="w-3.5 h-3.5 text-gray-500" />
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Execution Logs</span>
-          </div>
-          <div className="p-4 font-mono text-xs overflow-y-auto">
-            {logs.length === 0 ? (
-              <p className="text-gray-700 italic">// Environment ready. Click "Test Snippet" to verify logic.</p>
-            ) : (
-              <div className="space-y-1">
-                {logs.map((log, i) => (
-                  <div key={i} className={log.startsWith('>') ? 'text-blue-400' : log.includes('✓') ? 'text-green-400' : 'text-red-400'}>
-                    {log}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
+        </div>
       </main>
     </div>
   );
 };
 
-// FINAL ROOT COMPONENT
 const RoundTwo = () => {
-  const navigate = useNavigate();
-  const [view, setView] = useState('LOGIN'); 
-  const [currentUser, setCurrentUser] = useState(null);
-  
   const [participants, setParticipants] = useState(() => {
     try {
       const saved = localStorage.getItem('round2_participants');
@@ -641,41 +712,105 @@ const RoundTwo = () => {
     } catch (e) { return []; }
   });
 
+  // LOGIC: If it's NOT a page reload (i.e. landing from home), force Login.
+  // Performance timing API is used to detect reload vs navigation.
+  const [view, setView] = useState(() => {
+    const savedView = localStorage.getItem('round2_view');
+    const savedRoll = localStorage.getItem('round2_current_roll');
+    
+    // Check if the current page load is a manual refresh (type 1 or 'reload')
+    const navigationEntries = performance.getEntriesByType("navigation");
+    const isReload = navigationEntries.length > 0 && navigationEntries[0].type === 'reload';
+
+    if (savedView === 'ADMIN') return 'ADMIN';
+    
+    // If it's a reload and we have a session, stay on the page.
+    // Otherwise, force a login to ensure security/reset when coming from Home.
+    if (isReload && savedRoll && savedView) {
+      return savedView;
+    }
+
+    return 'LOGIN';
+  }); 
+
+  const [currentUser, setCurrentUser] = useState(() => {
+    const rollNo = localStorage.getItem('round2_current_roll');
+    if (!rollNo) return null;
+    return participants.find(p => p.rollNo === rollNo) || null;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('round2_view', view);
+  }, [view]);
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('round2_current_roll', currentUser.rollNo);
+    } else {
+      localStorage.removeItem('round2_current_roll');
+    }
+  }, [currentUser]);
+
   const handleLogin = (userData) => {
     const existing = participants.find(p => p.rollNo === userData.rollNo);
-    if (existing) {
-      setCurrentUser(existing);
-    } else {
-      const randomCode = `TT2-${Math.floor(1000 + Math.random() * 9000)}`;
-      const newUser = { ...userData, participantCode: randomCode, score: 0, status: 'ACTIVE' };
-      const newList = [...participants, newUser];
+    let user = existing;
+    if (!existing) {
+      user = { 
+        ...userData, 
+        participantCode: `TT2-${Math.floor(1000 + Math.random() * 9000)}`, 
+        score: 0, 
+        status: 'ACTIVE',
+        lastSeen: Date.now(),
+        progress: QUESTIONS.map(q => ({ code: q.initialCode, status: 'UNATTEMPTED', partialPoints: 0 })) 
+      };
+      const newList = [...participants, user];
       setParticipants(newList);
       localStorage.setItem('round2_participants', JSON.stringify(newList));
-      setCurrentUser(newUser);
+    } else {
+      user.lastSeen = Date.now();
+      const newList = participants.map(p => p.rollNo === user.rollNo ? user : p);
+      setParticipants(newList);
+      localStorage.setItem('round2_participants', JSON.stringify(newList));
     }
-    setView('EXAM');
+    setCurrentUser(user);
+    if (getRoundStatus() || user.status === 'COMPLETED') setView('EXAM');
+    else setView('WAITING');
   };
 
-  const handleExamComplete = (result) => {
+  const handleProgressUpdate = (updatedAnswers) => {
+    if (!currentUser) return;
     const newList = participants.map(p => 
-      p.rollNo === currentUser.rollNo ? { ...p, ...result } : p
+      p.rollNo === currentUser.rollNo ? { ...p, progress: updatedAnswers, lastSeen: Date.now() } : p
     );
     setParticipants(newList);
     localStorage.setItem('round2_participants', JSON.stringify(newList));
   };
 
-  const clearData = () => {
-    if (confirm("DANGER: This will permanently delete ALL entries for Round 2. Continue?")) {
-      setParticipants([]);
-      localStorage.removeItem('round2_participants');
-    }
+  const handleExamComplete = (result) => {
+    const newList = participants.map(p => p.rollNo === currentUser.rollNo ? { ...p, ...result, lastSeen: Date.now() } : p);
+    setParticipants(newList);
+    localStorage.setItem('round2_participants', JSON.stringify(newList));
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('round2_current_roll');
+    localStorage.removeItem('round2_view');
+    localStorage.removeItem('round2_admin_auth');
+    setView('LOGIN');
+    setCurrentUser(null);
   };
 
   return (
     <>
-      {view === 'LOGIN' && <LoginScreen onLogin={handleLogin} onAdminAccess={() => setView('ADMIN')} />}
-      {view === 'ADMIN' && <AdminDashboard participants={participants} onLogout={() => setView('LOGIN')} onClearData={clearData} />}
-      {view === 'EXAM' && <ExamSession user={currentUser} onComplete={handleExamComplete} />}
+      {view === 'LOGIN' && <LoginScreen onLogin={handleLogin} onAdminAccess={() => setView('ADMIN')} participants={participants} />}
+      {view === 'ADMIN' && <AdminDashboard participants={participants} onLogout={handleLogout} onClearData={() => {
+        if(confirm("DANGER: This will permanently wipe all local data. Proceed?")) { 
+          localStorage.clear(); 
+          window.location.reload(); 
+        }
+      }} />}
+      {view === 'WAITING' && <WaitingLobby user={currentUser} onStart={() => setView('EXAM')} />}
+      {view === 'EXAM' && <ExamSession user={currentUser} onProgressUpdate={handleProgressUpdate} onComplete={handleExamComplete} />}
     </>
   );
 };
